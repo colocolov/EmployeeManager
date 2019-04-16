@@ -4,7 +4,10 @@ import employeemanager.models.City;
 import employeemanager.models.Country;
 import employeemanager.models.Employee;
 import employeemanager.models.Position;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Add extends javax.swing.JFrame {
 
@@ -45,6 +48,7 @@ public class Add extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setLocation(new java.awt.Point(300, 100));
 
         jLabel1.setText("About employee");
 
@@ -308,7 +312,11 @@ public class Add extends javax.swing.JFrame {
         emp.setCountry(Country.getByCountryName(country));
         emp.setCity(City.getByCityOnName(city));
         emp.setPosition(Position.getByPositiOnName(profession));
-        Main.addEmployee(emp);
+        try {
+            Main.addEmployee(emp);
+        } catch (SQLException ex) {
+            Logger.getLogger(Add.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // очистка данных
         this.nameTxtField.setText("");
         this.surnameTxtField.setText("");

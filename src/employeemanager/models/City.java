@@ -14,6 +14,10 @@ public enum City {
     private City(String city) {
         this.city = city;
     }
+    
+    public String getName(){
+        return this.city;
+    }
 
     public static City getByCityOnName(String cityName) {
         for (City cit : City.values()) {

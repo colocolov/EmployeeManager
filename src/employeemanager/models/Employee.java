@@ -30,6 +30,44 @@ public class Employee {
         this.birthday = birthday;
     }
     
+    public Employee(Integer id, String name, String surname, LocalDate birthday, Country country, 
+    City city, String street, Integer zip, Position position) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.birthday = birthday;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zip = zip;
+        this.position = position;
+    }
+    
+    public Employee(Integer id, String name, String surname, Country country, 
+    City city, String street, Position position) {
+        this.name = name;
+        this.surname = surname;
+        //this.birthday = birthday;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zip = zip;
+        this.position = position;
+    }
+    
+    // для edita
+    public Employee(Integer id, String name, String surname, LocalDate birthday, String street, Position position) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.birthday = birthday;
+        //this.country = country;
+        //this.city = city;
+        this.street = street;
+        //this.zip = zip;
+        this.position = position;
+    }
+    
     // для примера на уроке с полиморфизмом
     public Employee(String name, String surname) {
         this.name = name;

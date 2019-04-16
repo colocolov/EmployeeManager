@@ -3,19 +3,33 @@ package employeemanager.gui;
 import employeemanager.models.MyEmployee;
 import employeemanager.models.Employee;
 import employeemanager.service.EmployeeService;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Стас
- */
 public class Main extends javax.swing.JFrame {
 
     private final int ID = 0;
 
     public Main() {
         initComponents();
+        this.loadEmployee();
+    }
+    
+    private void loadEmployee(){
+        
+        try {
+                ArrayList<Employee> all = EmployeeService.getAll();
+            DefaultTableModel employeeListModel = (DefaultTableModel) Main.employeesListTable.getModel();
+            for (Employee emp : all) {
+                int employeeId = employeeListModel.getRowCount() + 1;
+            employeeListModel.addRow(new Object[]{employeeId, emp.getName(), emp.getSurname(), emp.getBirthday(), 
+                emp.getCountry() + " / " + emp.getCity() + " / " + emp.getStreet() + " / " + emp.getZip(), emp.getPosition().toString()});
+            }
+        } catch (SQLException ex) {
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -39,18 +53,19 @@ public class Main extends javax.swing.JFrame {
         jButton10 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Main window");
+        setLocation(new java.awt.Point(150, 100));
 
         jLabel2.setText("Employees");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         printBtn.setText("Print");
+        printBtn.setMaximumSize(new java.awt.Dimension(100, 25));
+        printBtn.setMinimumSize(new java.awt.Dimension(100, 25));
         printBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printBtnActionPerformed(evt);
@@ -58,6 +73,8 @@ public class Main extends javax.swing.JFrame {
         });
 
         importBtn.setText("Import");
+        importBtn.setMaximumSize(new java.awt.Dimension(100, 25));
+        importBtn.setMinimumSize(new java.awt.Dimension(100, 25));
         importBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importBtnActionPerformed(evt);
@@ -65,6 +82,8 @@ public class Main extends javax.swing.JFrame {
         });
 
         exportBtn.setText("Export");
+        exportBtn.setMaximumSize(new java.awt.Dimension(100, 25));
+        exportBtn.setMinimumSize(new java.awt.Dimension(100, 25));
         exportBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportBtnActionPerformed(evt);
@@ -79,8 +98,8 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(exportBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(importBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(printBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(printBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(importBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -98,6 +117,8 @@ public class Main extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         addEmplBtn.setText("Add Employee");
+        addEmplBtn.setMaximumSize(new java.awt.Dimension(100, 25));
+        addEmplBtn.setMinimumSize(new java.awt.Dimension(100, 25));
         addEmplBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addEmplBtnActionPerformed(evt);
@@ -112,6 +133,8 @@ public class Main extends javax.swing.JFrame {
         });
 
         deleteEmpBtn.setText("Delete Employee");
+        deleteEmpBtn.setMaximumSize(new java.awt.Dimension(100, 25));
+        deleteEmpBtn.setMinimumSize(new java.awt.Dimension(100, 25));
         deleteEmpBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteEmpBtnActionPerformed(evt);
@@ -185,12 +208,6 @@ public class Main extends javax.swing.JFrame {
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Add");
-        jMenuBar1.add(jMenu3);
-
         jMenu4.setText("About");
         jMenuBar1.add(jMenu4);
 
@@ -202,53 +219,53 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 764, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 764, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel2))
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void addEmployee(Employee emp) {
+    public static void addEmployee(Employee emp) throws SQLException {
         if (emp.isValid()) {
             addEmployeeToList(emp);
         } else {
@@ -256,25 +273,24 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
-    public static void editEmployee(int idEmployee, String newName, String newSurname, String newBirthday, String newCountry, String newCity, String newStreet, Integer newZip, String newPosition){
+    public static void editEmployee(String newName, String newSurname, String newBirthday, String newCountry, String newCity, String newStreet, Integer newZip, String newPosition){
         DefaultTableModel employeeListModel = (DefaultTableModel) Main.employeesListTable.getModel(); // так мы будем ссылаться на наши данные в таблице
-        employeeListModel.setValueAt(newName, idEmployee - 1, 1);
-        employeeListModel.setValueAt(newSurname, idEmployee - 1, 2);
-        employeeListModel.setValueAt(newBirthday, idEmployee - 1, 3);
-        employeeListModel.setValueAt(newCountry  + " / " +  newCity  + " / " +  newStreet + " / " +  newZip, idEmployee - 1, 4);
-        employeeListModel.setValueAt(newPosition, idEmployee - 1, 5);
-        EmployeeService.edit(idEmployee, newName, newSurname, newBirthday, newCountry, newCity, newStreet, newZip, newPosition);
+        employeeListModel.setValueAt(newName, selectedRow , 1);
+        employeeListModel.setValueAt(newSurname, selectedRow , 2);
+        employeeListModel.setValueAt(newBirthday, selectedRow , 3);
+        employeeListModel.setValueAt(newCountry + " / " + newCity + " / " + newStreet + " / " + newZip, selectedRow , 4);
+        employeeListModel.setValueAt(newPosition, selectedRow , 5);
+        //EmployeeService.edit(idEmployee, newName, newSurname, newBirthday, newCountry, newCity, newStreet, newZip, newPosition);
     }
 
-    private static void addEmployeeToList(Employee emp) {
+    private static void addEmployeeToList(Employee emp) throws SQLException {
         DefaultTableModel employeeListModel = (DefaultTableModel) Main.employeesListTable.getModel(); // так мы будем ссылаться на наши данные в таблице
         int employeeId = employeeListModel.getRowCount() + 1;
         employeeListModel.addRow(new Object[]{employeeId, emp.getName(), emp.getSurname(), emp.getBirthday().toString(), 
-            emp.getCountry().toString() + " / " +  emp.getCity().toString() + " / " + emp.getStreet() + " / " + emp.getZip(), 
-            emp.getPosition().toString()});
+            emp.getCountry().getName() + " / " +  emp.getCity().toString() + " / " + emp.getStreet() + " / " + emp.getZip(), 
+            emp.getPosition().getName()});
         emp.setId(employeeId);
-        EmployeeService.getEmployeesList().add(emp);
-        
+        EmployeeService.add(emp);   
     }
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -289,18 +305,35 @@ public class Main extends javax.swing.JFrame {
         //setVisible(true); // закрывает текущее окно
     }//GEN-LAST:event_addEmplBtnActionPerformed
 
+    public static int selectedRow;
     private void editEmplBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editEmplBtnActionPerformed
         // кнопка EditEmployee
-        int selectRow = Main.employeesListTable.getSelectedRow();
-        if (selectRow != -1) { // если выбрана строка то мы делаем код
+        selectedRow = Main.employeesListTable.getSelectedRow();
+        if (selectedRow != -1) { // если выбрана строка то мы делаем код
             DefaultTableModel employeeListModel = (DefaultTableModel) Main.employeesListTable.getModel(); // так мы будем ссылаться на наши данные в таблице
-            Object value = employeeListModel.getValueAt(selectRow, ID); // определяем какая была выбрана строка и колонка 
-            Integer employeeId = Integer.parseInt(value.toString());
-            Employee foundEmployee = EmployeeService.getById(employeeId);
             
+            Object name = employeeListModel.getValueAt(selectedRow, 1);
+            Object surname = employeeListModel.getValueAt(selectedRow, 2);
+//            Object country = employeeListModel.getValueAt(selectedRow, 4);
+//            Object street = employeeListModel.getValueAt(selectedRow, 4);
+//            Object city = employeeListModel.getValueAt(selectedRow, 4);
+            Object position = employeeListModel.getValueAt(selectedRow, 5);
+            Employee foundEmployee = EmployeeService.getByParams(name.toString(),
+                    surname.toString(),
+//                    country.toString(),
+//                    city.toString(),
+//                    street.toString(),
+                    position.toString());
+            
+            System.out.println(foundEmployee);
+            System.out.println(selectedRow);
+
             Edit editWindow = new Edit(foundEmployee);
             editWindow.setVisible(true); // открывает окно Edit
-            //setVisible(true); // закрывает текущее окно
+            
+            //Object value = employeeListModel.getValueAt(selectedRow, ID); // определяем какая была выбрана строка и колонка 
+            //Integer employeeId = Integer.parseInt(value.toString());
+            
         }
     }//GEN-LAST:event_editEmplBtnActionPerformed
 
@@ -368,7 +401,7 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                 new Main().setVisible(true); 
             }
         });
     }
@@ -385,8 +418,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;

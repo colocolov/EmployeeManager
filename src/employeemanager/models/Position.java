@@ -9,15 +9,24 @@ public enum Position {
     HRManager("HR Manager"),
     Cleaner("Cleaner");
 
-    private String name;
+    private String customName;
 
     private Position(String name) {
-        this.name = name;
+        this.customName = name;
+    }
+    
+    public String getName(){
+        return this.customName;
+    }
+    
+    @Override
+    public String toString() {
+        return customName;
     }
     
     public static Position getByPositiOnName(String positionName){
         for (Position pos : Position.values()){
-            if (pos.name.equals(positionName)){
+            if (pos.customName.equals(positionName)){
                 return pos;
             }
         }

@@ -12,6 +12,15 @@ public enum Country {
     private Country(String country) {
         this.country = country;
     }
+    
+    public String getName(){
+        return this.country;
+    }
+    
+    @Override
+    public String toString() {
+        return country;
+    }
 
     public static Country getByCountryName(String countryName) {
         for (Country countr : Country.values()) {

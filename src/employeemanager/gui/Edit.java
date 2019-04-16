@@ -1,8 +1,15 @@
 package employeemanager.gui;
 
+import employeemanager.models.City;
+import employeemanager.models.Country;
 import employeemanager.models.Employee;
+import employeemanager.models.Position;
+import employeemanager.service.EmployeeDao;
 import employeemanager.service.EmployeeService;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Edit extends javax.swing.JFrame {
     
@@ -10,7 +17,7 @@ public class Edit extends javax.swing.JFrame {
 
     public Edit(Employee emp){
         
-        String day = String.valueOf(emp.getBirthday().getDayOfMonth());
+//        String day = String.valueOf(emp.getBirthday().getDayOfMonth());
         String monthInt = null;
             switch(emp.getBirthday().getMonthValue()){
                 case(1): 
@@ -69,6 +76,7 @@ public class Edit extends javax.swing.JFrame {
         zipTxtField.setText(emp.getZip().toString());
         positionComboBox.setSelectedItem(emp.getPosition().toString());
         this.emp = emp;
+        this.idLabel.setText(this.emp.getId().toString());
     }
 
     @SuppressWarnings("unchecked")
@@ -97,6 +105,7 @@ public class Edit extends javax.swing.JFrame {
         positionComboBox = new javax.swing.JComboBox<>();
         zipTxtField = new javax.swing.JTextField();
         saveBtn = new javax.swing.JButton();
+        idLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -107,6 +116,7 @@ public class Edit extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Edit employee");
+        setLocation(new java.awt.Point(300, 100));
 
         jLabel1.setText("About employee");
 
@@ -237,6 +247,8 @@ public class Edit extends javax.swing.JFrame {
             }
         });
 
+        idLabel.setText("jLabel4");
+
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
@@ -256,12 +268,17 @@ public class Edit extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(idLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -272,7 +289,9 @@ public class Edit extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idLabel))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -345,8 +364,17 @@ public class Edit extends javax.swing.JFrame {
         String newStreet = streetTxtField.getText();
         String newZip = zipTxtField.getText();
         String newPosition = positionComboBox.getSelectedItem().toString();
-        Main.editEmployee(this.emp.getId(), newName, newSurname, newBirthday.toString(), newCountry, newCity, newStreet, Integer.parseInt(newZip), newPosition);
-        EmployeeService.edit(this.emp.getId(), newName, newSurname, newBirthday.toString(), newCountry, newCity, newStreet, Integer.parseInt(newZip), newPosition);
+        
+        Employee emp = new Employee (this.emp.getId(), newName, newSurname, newBirthday, 
+                Country.getByCountryName(newCountry), City.getByCityOnName(newCity), newStreet, Integer.parseInt(newZip),
+                Position.getByPositiOnName(newPosition));
+        try {
+            EmployeeService.edit(emp);
+        } catch (SQLException ex) {
+            Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Main.editEmployee(newName, newSurname, newBirthday.toString(), newCountry, newCity, newStreet, Integer.parseInt(newZip), newPosition);
+        //EmployeeService.edit(this.emp.getId(), newName, newSurname, newBirthday.toString(), newCountry, newCity, newStreet, Integer.parseInt(newZip), newPosition);
         setVisible(false);
     }//GEN-LAST:event_saveBtnActionPerformed
 
@@ -389,6 +417,7 @@ public class Edit extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cityCmbBox;
     private javax.swing.JComboBox<String> countryCmbBox;
     private javax.swing.JComboBox<String> dayCmbBox;
+    private javax.swing.JLabel idLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
